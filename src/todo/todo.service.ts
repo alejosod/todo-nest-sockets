@@ -23,6 +23,14 @@ export class TodoService {
     return todo;
   }
 
+  async deleteMany(ids: string[]): Promise<number> {
+    const result = await this.todoRepository.delete([...ids]);
+
+    const { affected } = result;
+
+    return affected;
+  }
+
   getAll(): Promise<Todo[]> {
     return this.todoRepository.find();
   }
