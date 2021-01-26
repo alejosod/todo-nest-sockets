@@ -6,18 +6,27 @@ import {
   Param,
   Post,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { Todo } from './todo.entity';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './CreateTodoDto';
+import { SerializeFilter } from '../common/pipes';
 
 @Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  @Get()
+  @Get('/all')
   getAll(): Promise<Todo[]> {
     return this.todoService.getAll();
+  }
+
+  @Get()
+  @UsePipes(new SerializeFilter())
+  getMany(@Query('filter') filter: string, @Query('ids') ids: string): void {
+    console.log({ filter, ids });
+    this.todoService.getMany();
   }
 
   @Get('/:id')

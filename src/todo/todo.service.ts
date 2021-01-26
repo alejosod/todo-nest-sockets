@@ -35,6 +35,10 @@ export class TodoService {
     return this.todoRepository.find();
   }
 
+  getMany(): void {
+    // const todos = await this.todoRepository.find();
+  }
+
   async getOne(todoId: number): Promise<Todo> {
     const todo = await this.todoRepository.findOne({ id: todoId });
 
