@@ -1,7 +1,7 @@
-import { CreateTodoDto } from './CreateTodoDto';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateTodoDto } from './CreateTodoDto';
 import { Todo } from './todo.entity';
 
 @Injectable()
@@ -25,5 +25,15 @@ export class TodoService {
 
   getAll(): Promise<Todo[]> {
     return this.todoRepository.find();
+  }
+
+  async getOne(todoId: number): Promise<Todo> {
+    const todo = await this.todoRepository.findOne({ id: todoId });
+
+    if (todo) {
+      return todo;
+    } else {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
   }
 }

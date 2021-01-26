@@ -12,6 +12,11 @@ export class TodoController {
     return this.todoService.getAll();
   }
 
+  @Get('/:id')
+  GetOne(@Param('id') id: number): Promise<Todo> {
+    return this.todoService.getOne(id);
+  }
+
   @Post()
   create(@Body() todoInformation: CreateTodoDto): Promise<Todo> {
     return this.todoService.create(todoInformation);
