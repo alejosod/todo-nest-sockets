@@ -3,15 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoModule } from './todo/todo.module';
+import { Todo } from './todo/todo.entity';
 
 const dataBaseModule = TypeOrmModule.forRoot({
   autoLoadEntities: true,
   database: 'test',
-  entities: [],
+  entities: [Todo],
   host: 'localhost',
-  password: 'root',
+  password: 'Ichthysabba2',
   port: 3306,
-  synchronize: true,
   type: 'mysql',
   username: 'root',
 });
