@@ -35,8 +35,24 @@ export class TodoService {
     return this.todoRepository.find();
   }
 
-  getMany(): void {
-    // const todos = await this.todoRepository.find();
+  getMany(ids: string, filter: any, order: any): Promise<Todo[]> {
+    if (ids) {
+      const where = ids.split(',').map((id) => ({ id }));
+
+      return this.todoRepository.find({ where });
+    } else {
+      const options: any = {};
+
+      if (order) {
+        options.order = order;
+      }
+
+      if (filter) {
+        options.where = filter;
+      }
+
+      return this.todoRepository.find(options);
+    }
   }
 
   async getOne(todoId: number): Promise<Todo> {

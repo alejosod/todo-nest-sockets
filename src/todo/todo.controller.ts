@@ -26,12 +26,11 @@ export class TodoController {
   @UsePipes(new SerializeFilter())
   @UsePipes(new SerializeSorting())
   getMany(
-    @Query('filter') filter: string,
+    @Query('filter') filter: any,
     @Query('ids') ids: string,
-    @Query('sort') sort: string,
-  ): void {
-    console.log({ filter, ids, sort });
-    this.todoService.getMany();
+    @Query('sort') sort: any,
+  ): Promise<Todo[]> {
+    return this.todoService.getMany(ids, filter, sort);
   }
 
   @Get('/:id')

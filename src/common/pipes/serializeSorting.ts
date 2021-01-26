@@ -5,7 +5,8 @@ export class SerializeSorting implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata): any {
     const { data } = metadata;
 
-    if (data === 'sort') {
+    console.log({ value, metadata });
+    if (data === 'sort' && value) {
       const newValue = {};
 
       if (value.includes('-')) {
@@ -17,6 +18,7 @@ export class SerializeSorting implements PipeTransform {
         newValue[value] = 'ASC';
       }
 
+      console.log({ newValue });
       return newValue;
     } else {
       return value;

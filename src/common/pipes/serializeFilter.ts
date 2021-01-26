@@ -5,7 +5,7 @@ export class SerializeFilter implements PipeTransform {
   transform(value: any, metadata: ArgumentMetadata): any {
     const { data } = metadata;
 
-    if (data === 'filter') {
+    if (data === 'filter' && value) {
       const newValue = {};
 
       const queryValues = value.split(',');
