@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class GetManyFilterDto {
   @IsString()
@@ -8,4 +8,8 @@ export class GetManyFilterDto {
   @IsString()
   @IsOptional()
   description: string;
+
+  @IsBoolean()
+  @IsOptional()
+  active: boolean;
 }

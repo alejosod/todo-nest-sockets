@@ -1,18 +1,31 @@
+import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TodoController } from './todo.controller';
+import { AppModule } from '../app.module';
+import { INestApplication } from '@nestjs/common';
 
-describe('TodoController', () => {
-  let controller: TodoController;
+describe('Todos', () => {
+  let app: INestApplication;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [TodoController],
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
     }).compile();
 
-    controller = module.get<TodoController>(TodoController);
+    app = moduleFixture.createNestApplication();
+    app.enableShutdownHooks();
+
+    await app.init();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('/todos [Post](Create One)', async () => {
+    const res = await request(app.getHttpServer()).get('/todo').send();
+
+    console.log({ status: res.status });
+
+    expect(res.status).toBe(200);
   });
 });
