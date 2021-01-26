@@ -1,3 +1,4 @@
 import { SerializeFilter } from './serializeFilter';
+import { SerializeSorting } from './serializeSorting';
 
-export { SerializeFilter };
+export { SerializeFilter, SerializeSorting };

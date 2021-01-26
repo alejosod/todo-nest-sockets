@@ -11,7 +11,7 @@ import {
 import { Todo } from './todo.entity';
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './CreateTodoDto';
-import { SerializeFilter } from '../common/pipes';
+import { SerializeFilter, SerializeSorting } from '../common/pipes';
 
 @Controller('todo')
 export class TodoController {
@@ -24,8 +24,13 @@ export class TodoController {
 
   @Get()
   @UsePipes(new SerializeFilter())
-  getMany(@Query('filter') filter: string, @Query('ids') ids: string): void {
-    console.log({ filter, ids });
+  @UsePipes(new SerializeSorting())
+  getMany(
+    @Query('filter') filter: string,
+    @Query('ids') ids: string,
+    @Query('sort') sort: string,
+  ): void {
+    console.log({ filter, ids, sort });
     this.todoService.getMany();
   }
 
