@@ -11,12 +11,16 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
   ) {}
 
-  create(todoInformation: CreateTodoDto): Todo {
-    return this.todoRepository.create(todoInformation);
+  create(todoInformation: CreateTodoDto): Promise<Todo> {
+    return this.todoRepository.save(todoInformation);
   }
 
-  delete(todoId: number): Promise<any> {
-    return this.todoRepository.delete({ id: todoId });
+  async delete(todoId: number): Promise<any> {
+    const todo = await this.todoRepository.find({ id: todoId });
+
+    await this.todoRepository.delete(todoId);
+
+    return todo;
   }
 
   getAll(): Promise<Todo[]> {

@@ -16,7 +16,9 @@ export class Todo {
   @Column()
   description: string;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   active: boolean;
 
   @CreateDateColumn()

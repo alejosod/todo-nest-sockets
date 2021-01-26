@@ -13,11 +13,11 @@ export class TodoController {
   }
 
   @Post()
-  create(@Body() todoInformation: CreateTodoDto): Todo {
+  create(@Body() todoInformation: CreateTodoDto): Promise<Todo> {
     return this.todoService.create(todoInformation);
   }
 
-  @Delete()
+  @Delete('/:id')
   delete(@Param('id') id: number): Promise<Todo> {
     return this.todoService.delete(id);
   }
