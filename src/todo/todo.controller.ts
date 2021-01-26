@@ -6,12 +6,17 @@ import {
   Param,
   Post,
   Query,
-  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Todo } from './todo.entity';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './CreateTodoDto';
-import { SerializeFilter, SerializeSorting } from '../common/pipes';
+import { CreateTodoDto } from './Dtos/CreateTodoDto';
+import {
+  SerializeFilter,
+  SerializeSorting,
+  ValidateFilter,
+} from '../common/pipes';
+import { GetManyFilterDto } from './Dtos/getManyFilterDto';
 
 @Controller('todo')
 export class TodoController {
@@ -23,12 +28,15 @@ export class TodoController {
   }
 
   @Get()
-  @UsePipes(new SerializeFilter())
-  @UsePipes(new SerializeSorting())
   getMany(
-    @Query('filter') filter: any,
-    @Query('ids') ids: string,
-    @Query('sort') sort: any,
+    @Query(
+      'filter',
+      new SerializeFilter(),
+      new ValidationPipe({ whitelist: true }),
+    )
+    filter: GetManyFilterDto | undefined,
+    @Query('ids') ids: string | undefined,
+    @Query('sort', new SerializeSorting()) sort: any,
   ): Promise<Todo[]> {
     return this.todoService.getMany(ids, filter, sort);
   }
