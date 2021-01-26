@@ -14,4 +14,12 @@ export class TodoService {
   create(todoInformation: CreateTodoDto): Todo {
     return this.todoRepository.create(todoInformation);
   }
+
+  delete(todoId: number): Promise<any> {
+    return this.todoRepository.delete({ id: todoId });
+  }
+
+  getAll(): Promise<Todo[]> {
+    return this.todoRepository.find();
+  }
 }
