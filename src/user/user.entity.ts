@@ -1,14 +1,14 @@
 import {
-  BeforeInsert,
   Column,
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
-import bcrypt from 'bcrypt';
 import { Todo } from '../todo/todo.entity';
 
 @Entity()
+@Unique(['email'])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,11 +24,6 @@ export class User {
 
   @Column()
   password: string;
-
-  @BeforeInsert()
-  async hashPassword() {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 
   @OneToMany(() => Todo, (todo) => todo.user)
   todos: Todo[];
