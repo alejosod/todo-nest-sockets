@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTodoDto } from './Dtos/CreateTodoDto';
 import { Todo } from './todo.entity';
+import { TodoIncludeEnum } from './Dtos/getTodoIncludeDto';
 
 @Injectable()
 export class TodoService {
@@ -31,8 +32,18 @@ export class TodoService {
     return affected;
   }
 
-  getAll(): Promise<Todo[]> {
-    return this.todoRepository.find();
+  getAll(order, include): Promise<Todo[]> {
+    const options: any = {};
+
+    if (order) {
+      options.order = order;
+    }
+
+    if (include) {
+      options.relations = include;
+    }
+
+    return this.todoRepository.find(options);
   }
 
   getMany(ids: string, filter: any, order: any): Promise<Todo[]> {
@@ -55,8 +66,11 @@ export class TodoService {
     }
   }
 
-  async getOne(todoId: number): Promise<Todo> {
-    const todo = await this.todoRepository.findOne({ id: todoId });
+  async getOne(todoId: number, include: Array<TodoIncludeEnum>): Promise<Todo> {
+    const options: any = {};
+    options.relations = include;
+
+    const todo = await this.todoRepository.findOne({ id: todoId }, options);
 
     if (todo) {
       return todo;

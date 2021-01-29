@@ -6,6 +6,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Todo } from '../todo/todo.entity';
+import { ROLES } from '../common/Dtos';
 
 @Entity()
 @Unique(['email'])
@@ -25,6 +26,14 @@ export class User {
   @Column()
   password: string;
 
-  @OneToMany(() => Todo, (todo) => todo.user)
+  @Column({
+    default: ROLES.Employee,
+  })
+  role: string;
+
+  @OneToMany(() => Todo, (todo) => todo.creator)
   todos: Todo[];
+
+  @OneToMany(() => Todo, (todo) => todo.assignee)
+  tasks: Todo[];
 }

@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { User } from '../../user/user.entity';
 
 export class CreateTodoDto {
   @IsNotEmpty()
@@ -8,4 +9,12 @@ export class CreateTodoDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  creator: User;
+
+  @IsNotEmpty()
+  @IsString()
+  assignee: User;
 }

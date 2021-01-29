@@ -27,5 +27,8 @@ export class Todo {
   createdAt: Date;
 
   @ManyToOne(() => User, (user) => user.todos)
-  user: User;
+  creator: User;
+
+  @ManyToOne(() => User, (user) => user.tasks)
+  assignee: User;
 }
