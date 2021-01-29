@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { Todo } from './todo.entity';
 import { TodoService } from './todo.service';
-import { CreateTodoDto } from './Dtos/CreateTodoDto';
 import { SerializeFilter, SerializeSorting } from '../common/pipes';
 import { GetManyFilterDto } from './Dtos/getManyFilterDto';
 import { GetManySortDto } from './Dtos/getManySortDto';
@@ -20,9 +19,15 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AttachAssignee } from './pipes/attachAssignee';
 import { SetRelations } from './pipes/setRelations';
 import { TodoIncludeEnum } from './Dtos/getTodoIncludeDto';
+import { UserService } from '../user/user.service';
 
 @Controller('todo')
 export class TodoController {
+  constructor(
+    private todoService: TodoService,
+    private userService: UserService,
+  ) {}
+
   @Get('/all')
   getAll(
     @Query(
@@ -40,8 +45,6 @@ export class TodoController {
   ): Promise<Todo[]> {
     return this.todoService.getAll(sort, include);
   }
-
-  constructor(private todoService: TodoService) {}
 
   @Get()
   getMany(
@@ -83,13 +86,16 @@ export class TodoController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(
-    @Body(AttachAssignee) todo: CreateTodoDto,
-    @Request() req,
-  ): Promise<Todo> {
+  async create(@Body(AttachAssignee) todo: any, @Request() req): Promise<Todo> {
+    const { id } = req.user;
+
+    const creator = await this.userService.findOne(id);
+
+    console.log({ creator });
+
     return this.todoService.create({
       ...todo,
-      creator: req.user,
+      creator,
     });
   }
 
