@@ -5,7 +5,10 @@ import { TodoIncludeEnum } from '../Dtos/getTodoIncludeDto';
 export class SetRelations implements PipeTransform {
   transform(value: any): Array<TodoIncludeEnum> {
     if (value) {
-      return value.split(',');
+      const enumValue = Object.values(TodoIncludeEnum);
+      return value
+        .split(',')
+        .filter((relationName) => enumValue.includes(relationName));
     } else {
       return undefined;
     }

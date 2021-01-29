@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Todo } from '../todo/todo.entity';
 import { ROLES } from '../common/Dtos';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(['email'])
@@ -24,6 +25,7 @@ export class User {
   email: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column({
